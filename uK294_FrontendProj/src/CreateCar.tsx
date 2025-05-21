@@ -24,8 +24,8 @@ export default function CreateCar() {
       ...prev,
       [name]: name === 'Year' ? value : 
               ['Miles_per_Gallon', 'Cylinders', 'Displacement', 'Horsepower', 'Weight_in_lbs', 'Acceleration'].includes(name) 
-                ? Number(value) 
-                : value
+                ? Number(value) || 0
+                : value || ''
     }));
   };
 
@@ -59,8 +59,7 @@ export default function CreateCar() {
                 name="Name"
                 value={formData.Name}
                 onChange={handleInputChange}
-                required
-                placeholder="Enter car name"
+                placeholder="Enter car name (will be 'Unknown' if empty)"
               />
             </div>
             <div className="form-group">
@@ -71,7 +70,6 @@ export default function CreateCar() {
                 name="Year"
                 value={formData.Year}
                 onChange={handleInputChange}
-                required
               />
             </div>
             <div className="form-group">
@@ -82,14 +80,25 @@ export default function CreateCar() {
                 name="Origin"
                 value={formData.Origin}
                 onChange={handleInputChange}
-                required
-                placeholder="Enter country of origin"
+                placeholder="Enter country of origin (will be 'Unknown' if empty)"
               />
             </div>
           </div>
 
           <div className="form-section">
             <h3>Performance</h3>
+            <div className="form-group">
+              <label htmlFor="Miles_per_Gallon">Miles per Gallon:</label>
+              <input
+                type="number"
+                id="Miles_per_Gallon"
+                name="Miles_per_Gallon"
+                value={formData.Miles_per_Gallon}
+                onChange={handleInputChange}
+                min="0"
+                step="0.1"
+              />
+            </div>
             <div className="form-group">
               <label htmlFor="Horsepower">Horsepower:</label>
               <input
@@ -98,9 +107,7 @@ export default function CreateCar() {
                 name="Horsepower"
                 value={formData.Horsepower}
                 onChange={handleInputChange}
-                required
                 min="0"
-                placeholder="Enter horsepower"
               />
             </div>
             <div className="form-group">
@@ -109,26 +116,10 @@ export default function CreateCar() {
                 type="number"
                 id="Acceleration"
                 name="Acceleration"
-                step="0.1"
                 value={formData.Acceleration}
                 onChange={handleInputChange}
-                required
                 min="0"
-                placeholder="Enter acceleration time"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="Miles_per_Gallon">Miles per Gallon:</label>
-              <input
-                type="number"
-                id="Miles_per_Gallon"
-                name="Miles_per_Gallon"
                 step="0.1"
-                value={formData.Miles_per_Gallon}
-                onChange={handleInputChange}
-                required
-                min="0"
-                placeholder="Enter MPG"
               />
             </div>
           </div>
@@ -143,9 +134,7 @@ export default function CreateCar() {
                 name="Cylinders"
                 value={formData.Cylinders}
                 onChange={handleInputChange}
-                required
-                min="1"
-                placeholder="Enter number of cylinders"
+                min="0"
               />
             </div>
             <div className="form-group">
@@ -156,9 +145,8 @@ export default function CreateCar() {
                 name="Displacement"
                 value={formData.Displacement}
                 onChange={handleInputChange}
-                required
                 min="0"
-                placeholder="Enter engine displacement"
+                step="0.1"
               />
             </div>
             <div className="form-group">
@@ -169,22 +157,14 @@ export default function CreateCar() {
                 name="Weight_in_lbs"
                 value={formData.Weight_in_lbs}
                 onChange={handleInputChange}
-                required
                 min="0"
-                placeholder="Enter vehicle weight"
               />
             </div>
           </div>
 
           <div className="form-actions">
             <button type="submit" className="save-button">Create Car</button>
-            <button 
-              type="button" 
-              onClick={() => navigate('/cars')}
-              className="cancel-button"
-            >
-              Cancel
-            </button>
+            <button type="button" onClick={() => navigate('/cars')} className="cancel-button">Cancel</button>
           </div>
         </form>
       </div>

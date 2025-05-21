@@ -1,26 +1,33 @@
 import { useState } from 'react';
-import { login } from './service';
-import { useNavigate, Link } from 'react-router-dom'
+import { register } from './service';
+import { useNavigate, Link } from 'react-router-dom';
 
-export function Login() {
+export function Register() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+
         try {
-            await login({ email, password });
-            navigate("/cars")
+            await register({ email, password, confirmPassword });
+            navigate("/cars");
         } catch (err) {
-            setError('Login failed. Please check your credentials.');
+            setError('Registration failed. Please try again.');
         }
     };
 
     return (
         <div className="login-container">
-            <h2>Welcome Back</h2>
+            <h2>Create Account</h2>
             {error && <div className="error">{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div>
@@ -41,15 +48,26 @@ export function Login() {
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter your password"
+                        placeholder="Create a password"
                         required
                     />
                 </div>
-                <button type="submit">Sign In</button>
+                <div>
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Confirm your password"
+                        required
+                    />
+                </div>
+                <button type="submit">Create Account</button>
             </form>
             <div className="nav-links">
-                <Link to="/register">Create Account</Link>
+                <Link to="/login">Back to Sign In</Link>
             </div>
         </div>
     );
-}
+} 

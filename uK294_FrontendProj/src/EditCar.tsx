@@ -38,8 +38,8 @@ export default function EditCar() {
       ...prev,
       [name]: name === 'Year' ? value : 
               ['Miles_per_Gallon', 'Cylinders', 'Displacement', 'Horsepower', 'Weight_in_lbs', 'Acceleration'].includes(name) 
-                ? Number(value) 
-                : value
+                ? Number(value) || 0
+                : value || ''
     }));
   };
 
@@ -63,9 +63,10 @@ export default function EditCar() {
     <div className="container-cars">
       <div className="header">
         Edit Car
-        <button onClick={() => navigate(`/cars/${car.id}`)} className="back-button">Back</button>
+        <button onClick={() => navigate(`/cars/${car.id}`)} className="back-button">Back to Details</button>
       </div>
       <div className="edit-form-container">
+        {error && <div className="error">{error}</div>}
         <form onSubmit={handleSubmit} className="edit-form">
           <div className="form-section">
             <h3>Basic Information</h3>
@@ -77,7 +78,7 @@ export default function EditCar() {
                 name="Name"
                 value={formData.Name || ''}
                 onChange={handleInputChange}
-                required
+                placeholder="Enter car name (will be 'Unknown' if empty)"
               />
             </div>
             <div className="form-group">
@@ -88,7 +89,6 @@ export default function EditCar() {
                 name="Year"
                 value={formData.Year || ''}
                 onChange={handleInputChange}
-                required
               />
             </div>
             <div className="form-group">
@@ -99,7 +99,7 @@ export default function EditCar() {
                 name="Origin"
                 value={formData.Origin || ''}
                 onChange={handleInputChange}
-                required
+                placeholder="Enter country of origin (will be 'Unknown' if empty)"
               />
             </div>
           </div>
@@ -107,14 +107,26 @@ export default function EditCar() {
           <div className="form-section">
             <h3>Performance</h3>
             <div className="form-group">
+              <label htmlFor="Miles_per_Gallon">Miles per Gallon:</label>
+              <input
+                type="number"
+                id="Miles_per_Gallon"
+                name="Miles_per_Gallon"
+                value={formData.Miles_per_Gallon || 0}
+                onChange={handleInputChange}
+                min="0"
+                step="0.1"
+              />
+            </div>
+            <div className="form-group">
               <label htmlFor="Horsepower">Horsepower:</label>
               <input
                 type="number"
                 id="Horsepower"
                 name="Horsepower"
-                value={formData.Horsepower || ''}
+                value={formData.Horsepower || 0}
                 onChange={handleInputChange}
-                required
+                min="0"
               />
             </div>
             <div className="form-group">
@@ -123,22 +135,10 @@ export default function EditCar() {
                 type="number"
                 id="Acceleration"
                 name="Acceleration"
-                step="0.1"
-                value={formData.Acceleration || ''}
+                value={formData.Acceleration || 0}
                 onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="Miles_per_Gallon">Miles per Gallon:</label>
-              <input
-                type="number"
-                id="Miles_per_Gallon"
-                name="Miles_per_Gallon"
+                min="0"
                 step="0.1"
-                value={formData.Miles_per_Gallon || ''}
-                onChange={handleInputChange}
-                required
               />
             </div>
           </div>
@@ -151,9 +151,9 @@ export default function EditCar() {
                 type="number"
                 id="Cylinders"
                 name="Cylinders"
-                value={formData.Cylinders || ''}
+                value={formData.Cylinders || 0}
                 onChange={handleInputChange}
-                required
+                min="0"
               />
             </div>
             <div className="form-group">
@@ -162,9 +162,10 @@ export default function EditCar() {
                 type="number"
                 id="Displacement"
                 name="Displacement"
-                value={formData.Displacement || ''}
+                value={formData.Displacement || 0}
                 onChange={handleInputChange}
-                required
+                min="0"
+                step="0.1"
               />
             </div>
             <div className="form-group">
@@ -173,22 +174,16 @@ export default function EditCar() {
                 type="number"
                 id="Weight_in_lbs"
                 name="Weight_in_lbs"
-                value={formData.Weight_in_lbs || ''}
+                value={formData.Weight_in_lbs || 0}
                 onChange={handleInputChange}
-                required
+                min="0"
               />
             </div>
           </div>
 
           <div className="form-actions">
             <button type="submit" className="save-button">Save Changes</button>
-            <button 
-              type="button" 
-              onClick={() => navigate(`/cars/${car.id}`)}
-              className="cancel-button"
-            >
-              Cancel
-            </button>
+            <button type="button" onClick={() => navigate(`/cars/${car.id}`)} className="cancel-button">Cancel</button>
           </div>
         </form>
       </div>
