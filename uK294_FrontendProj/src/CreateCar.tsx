@@ -1,31 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import type { Car } from './service';
-import { addCar } from './service';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import type { Car } from "./service";
+import { addCar } from "./service";
 
 export default function CreateCar() {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<Omit<Car, 'id'>>({
-    Name: '',
+  const [formData, setFormData] = useState<Omit<Car, "id">>({
+    Name: "",
     Miles_per_Gallon: 0,
     Cylinders: 0,
     Displacement: 0,
     Horsepower: 0,
     Weight_in_lbs: 0,
     Acceleration: 0,
-    Year: new Date().toISOString().split('T')[0],
-    Origin: ''
+    Year: new Date().toISOString().split("T")[0],
+    Origin: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: name === 'Year' ? value : 
-              ['Miles_per_Gallon', 'Cylinders', 'Displacement', 'Horsepower', 'Weight_in_lbs', 'Acceleration'].includes(name) 
-                ? Number(value) || 0
-                : value || ''
+      [name]:
+        name === "Year"
+          ? value
+          : [
+              "Miles_per_Gallon",
+              "Cylinders",
+              "Displacement",
+              "Horsepower",
+              "Weight_in_lbs",
+              "Acceleration",
+            ].includes(name)
+          ? Number(value) || 0
+          : value || "",
     }));
   };
 
@@ -36,7 +45,7 @@ export default function CreateCar() {
       const newCar = await addCar(formData);
       navigate(`/cars/${newCar.id}`);
     } catch (err) {
-      setError('Failed to create car');
+      setError("Failed to create car");
     }
   };
 
@@ -44,7 +53,9 @@ export default function CreateCar() {
     <div className="container-cars">
       <div className="header">
         Add New Car
-        <button onClick={() => navigate('/cars')} className="back-button">Back to Cars</button>
+        <button onClick={() => navigate("/cars")} className="back-button">
+          Back to Cars
+        </button>
       </div>
       <div className="edit-form-container">
         {error && <div className="error">{error}</div>}
@@ -163,8 +174,16 @@ export default function CreateCar() {
           </div>
 
           <div className="form-actions">
-            <button type="submit" className="save-button">Create Car</button>
-            <button type="button" onClick={() => navigate('/cars')} className="cancel-button">Cancel</button>
+            <button type="submit" className="save-button">
+              Create Car
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/cars")}
+              className="cancel-button"
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>

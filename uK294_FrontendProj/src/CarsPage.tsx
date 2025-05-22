@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import type { Car } from './service'
-import { getCars, logout } from './service'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from "react";
+import type { Car } from "./service";
+import { getCars, logout } from "./service";
+import { useNavigate } from "react-router-dom";
 
 function CarsPage() {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ function CarsPage() {
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchCars = async () => {
     try {
@@ -18,8 +18,8 @@ function CarsPage() {
       setFilteredCars(data);
       setError(null);
     } catch (err) {
-      setError('Failed to fetch cars.');
-      navigate('/login');
+      setError("Failed to fetch cars.");
+      navigate("/login");
     } finally {
       setLoading(false);
     }
@@ -30,7 +30,7 @@ function CarsPage() {
   }, []);
 
   useEffect(() => {
-    const filtered = cars.filter(car => {
+    const filtered = cars.filter((car) => {
       const searchLower = searchTerm.toLowerCase();
       return (
         car.Name.toLowerCase().includes(searchLower) ||
@@ -43,7 +43,7 @@ function CarsPage() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleCarClick = (carId: number) => {
@@ -54,17 +54,19 @@ function CarsPage() {
   if (error) return <div className="error">{error}</div>;
 
   return (
-    <div className='container-cars'>
-      <div className='header'>
+    <div className="container-cars">
+      <div className="header">
         Cars
         <div className="header-buttons">
-          <button 
-            onClick={() => navigate('/cars/create')} 
+          <button
+            onClick={() => navigate("/cars/create")}
             className="create-button"
           >
             Add New Car
           </button>
-          <button onClick={handleLogout} className="logout-button">Logout</button>
+          <button onClick={handleLogout} className="logout-button">
+            Logout
+          </button>
         </div>
       </div>
       <div className="search-container">
@@ -75,15 +77,14 @@ function CarsPage() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-
       </div>
       <div className="car-list">
-        {filteredCars.map(car => (
-          <div 
-            key={car.id} 
-            className='car-card'
+        {filteredCars.map((car) => (
+          <div
+            key={car.id}
+            className="car-card"
             onClick={() => handleCarClick(car.id)}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: "pointer" }}
           >
             <h3>{car.Name}</h3>
             <div className="car-card-info">
@@ -99,7 +100,7 @@ function CarsPage() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export default CarsPage
+export default CarsPage;

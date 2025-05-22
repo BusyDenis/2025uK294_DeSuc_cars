@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import type { Car } from './service';
-import { getCars, updateCar } from './service';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import type { Car } from "./service";
+import { getCars, updateCar } from "./service";
 
 export default function EditCar() {
   const { id } = useParams();
@@ -15,15 +15,15 @@ export default function EditCar() {
     const fetchCar = async () => {
       try {
         const cars = await getCars();
-        const foundCar = cars.find(c => c.id === Number(id));
+        const foundCar = cars.find((c) => c.id === Number(id));
         if (foundCar) {
           setCar(foundCar);
           setFormData(foundCar);
         } else {
-          setError('Car not found');
+          setError("Car not found");
         }
       } catch (err) {
-        setError('Failed to fetch car details');
+        setError("Failed to fetch car details");
       } finally {
         setLoading(false);
       }
@@ -34,12 +34,21 @@ export default function EditCar() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: name === 'Year' ? value : 
-              ['Miles_per_Gallon', 'Cylinders', 'Displacement', 'Horsepower', 'Weight_in_lbs', 'Acceleration'].includes(name) 
-                ? Number(value) || 0
-                : value || ''
+      [name]:
+        name === "Year"
+          ? value
+          : [
+              "Miles_per_Gallon",
+              "Cylinders",
+              "Displacement",
+              "Horsepower",
+              "Weight_in_lbs",
+              "Acceleration",
+            ].includes(name)
+          ? Number(value) || 0
+          : value || "",
     }));
   };
 
@@ -51,7 +60,7 @@ export default function EditCar() {
       await updateCar(car.id, formData);
       navigate(`/cars/${car.id}`);
     } catch (err) {
-      setError('Failed to update car');
+      setError("Failed to update car");
     }
   };
 
@@ -63,7 +72,12 @@ export default function EditCar() {
     <div className="container-cars">
       <div className="header">
         Edit Car
-        <button onClick={() => navigate(`/cars/${car.id}`)} className="back-button">Back to Details</button>
+        <button
+          onClick={() => navigate(`/cars/${car.id}`)}
+          className="back-button"
+        >
+          Back to Details
+        </button>
       </div>
       <div className="edit-form-container">
         {error && <div className="error">{error}</div>}
@@ -76,7 +90,7 @@ export default function EditCar() {
                 type="text"
                 id="Name"
                 name="Name"
-                value={formData.Name || ''}
+                value={formData.Name || ""}
                 onChange={handleInputChange}
                 placeholder="Enter car name (will be 'Unknown' if empty)"
               />
@@ -87,7 +101,7 @@ export default function EditCar() {
                 type="date"
                 id="Year"
                 name="Year"
-                value={formData.Year || ''}
+                value={formData.Year || ""}
                 onChange={handleInputChange}
               />
             </div>
@@ -97,7 +111,7 @@ export default function EditCar() {
                 type="text"
                 id="Origin"
                 name="Origin"
-                value={formData.Origin || ''}
+                value={formData.Origin || ""}
                 onChange={handleInputChange}
                 placeholder="Enter country of origin (will be 'Unknown' if empty)"
               />
@@ -182,8 +196,16 @@ export default function EditCar() {
           </div>
 
           <div className="form-actions">
-            <button type="submit" className="save-button">Save Changes</button>
-            <button type="button" onClick={() => navigate(`/cars/${car.id}`)} className="cancel-button">Cancel</button>
+            <button type="submit" className="save-button">
+              Save Changes
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate(`/cars/${car.id}`)}
+              className="cancel-button"
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>
